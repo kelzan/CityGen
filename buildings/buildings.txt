@@ -1,0 +1,216 @@
+# Building Pack Configuration
+name Metropolis Building Pack
+scale 10
+
+# First Building
+schematic pagodatower.schematic
+name Pagoda Tower
+credit Kelzan
+initialrot 0
+#uselimit 5
+repeat 9 12 5 30
+repeat 17 20 5 30
+repeat 24 24 1 3
+repeat 33 33 1 10
+
+# Next Building
+schematic 10x10store.schematic
+name Small store w/ Overhead Apts.
+credit Kelzan
+initialrot 0
+repeat 5 8 1 30
+
+
+# Next Building
+schematic Ardity Tower v.2.schematic
+name Ardity Tower
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Ashton Plaza.schematic
+name Ashton Plaza
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Bay Saraykin Center v.3.schematic
+name Bay Saraykin Center
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Bayside Tower.schematic
+name Bayside Tower
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Bocksmor Bromo v.4.schematic
+name Bocksmor Bromo
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic bSIED6.schematic
+name bSIDE6 (Portland)
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+repeat 11 45 1 3
+
+# Next Building
+schematic Deeley Tower.schematic
+name Deeley Tower
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic En'emi Headquarters v.3.schematic
+name En'emi Headquarters
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Fluid Tower v.3.schematic
+name Fluid Tower
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Giskard Plaza v.4.schematic
+name Giskard Plaza
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 1
+
+# Next Building
+schematic Haler Building.schematic
+name Haler Building
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 1
+
+# Next Building
+schematic Hesperia Tower v.4.schematic
+name Hesperia Tower
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Huntington Center v.4.schematic
+name Huntington Center
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 1
+
+# Next Building
+schematic Kaerakin Office Tower v.5.schematic
+name Kaerakin Office Tower
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 1
+
+# Next Building
+schematic Nagol Center of Science & Supreme Harmony v.2.schematic
+name Nagol Center
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Netherrack Hotel.schematic
+name Netherrack Hotel
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Peitai 606.schematic
+name Peitai 606
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Selkirk Observatory.schematic
+name Selkirk Observatory
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Selkirk State Building v.3.schematic
+name Selkirk State Building
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Strygler Tower.schematic
+name Strygler Tower
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Takayuki Tower.schematic
+name Takayuki Tower
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic The Bank of Selkirk.schematic
+name Bank of Selkirk
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+# This thing is huge. Three towers up to a connecting elevated park.
+schematic The Bay Avenue Skyway Park Facility.schematic
+name Bay Avenue Skyway Park Facility
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 1
+
+# Next Building
+schematic The Hotel Ver'nal v.3.schematic
+name Hotel Ver'nal
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 1
+
+# Next Building
+schematic The Selkirk Beach Quadrilateral v.4.schematic
+name Selkirk Beach Quadrilateral
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic The Selkirk Beach Seaside Radisson v.6.schematic
+name Selkirk Beach Radisson
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 1
+
+# Next Building
+schematic The Skelcere Building v.2.schematic
+name Skelcere Building
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic The Whaller Building v.4.schematic
+name Whaller Building
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 1
+
+# Next Building
+schematic Turxmor Hotel.schematic
+name Turxmor Hotel
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Tzameret Tower (single).schematic
+name Tzameret Tower
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Vertical Urban Forest v.4.schematic
+name Vertical urban Forest
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
+
+# Next Building
+schematic Water Column Center.schematic
+name Water Column Center
+credit c4ndyr4vr604 (Planet Minecraft)
+uselimit 2
