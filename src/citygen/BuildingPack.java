@@ -252,4 +252,9 @@ public class BuildingPack {
 //        }
 
     }
+    public void resetUsages() {
+         for (int i = 0; i < buildingList.size(); i++) {
+            buildingList.get(i).resetUseLimit();
+        }   
+    }
 }

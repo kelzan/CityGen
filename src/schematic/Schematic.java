@@ -207,7 +207,8 @@ public class Schematic {
         byte nd;
         // Check to see if we're transforming stairs
         if ((ob == 53) || (ob == 67) || (ob == 108) || (ob == 109) || (ob == 114)
-                || (ob == -128) || (ob == -122) || (ob == -121) || (ob == -120) || (ob == -100)) {
+                || (ob == -128) || (ob == -122) || (ob == -121) || (ob == -120) || (ob == -100)
+                || (ob == -93) || (ob == -92) || (ob == -76)) {
             switch (od & 0x03) { // Lower two bits
                 case 0: // east -> south
                     nd = (byte) ((od & 0xfc) + 2);
@@ -273,7 +274,7 @@ public class Schematic {
                     nd = od;
                     break;
             }
-        } else if (ob == 63) { // Sign Post
+        } else if ((ob == 63) || (ob == -80)) { // Sign Post/Standing Banner
             // It's mapped like a 16 point compass, so rotating 4 notches is like 90 degrees.
             nd = (byte) ((od + 4) & 0xf);
         } else if (((ob == 64) || (ob == 71)) && ((od & 0x08) == 0)) { // Doors (bottom half)
@@ -354,8 +355,9 @@ public class Schematic {
                     nd = od;
                     break;
             }
-        } else if ((ob == 65) || (ob == 68) || (ob == 61) || (ob == 62) || (ob == 54) || (ob == 130) || (ob == -110)) {
-            // Ladders, Wall Signs, Furnaces, Chests
+        } else if ((ob == 65) || (ob == 68) || (ob == 61) || (ob == 62) || (ob == 54) 
+                || (ob == 130) || (ob == -79) || (ob == -110)) {
+            // Ladders, Wall Signs, Wall Banners, Furnaces, Chests
             switch (od) {
                 case 2: // north -> east
                     nd = 5;
@@ -422,8 +424,9 @@ public class Schematic {
                     break;
             }
         } else if ((ob == 86) || (ob == 91) || (ob == 96) || (ob == 107) || (ob == 119)
-                || (ob == -125) || (ob == 26)) {
-            // Pumpkins/Jack O Lanterns, Trapdoor, Gates, End Portal Block, Tripwire Hook, Beds
+                || (ob == -73) || (ob == -72) || (ob == -71) || (ob == -70) || (ob == -69) 
+                || (ob == -89) || (ob == -125) || (ob == 26)) {
+            // Pumpkins/Jack O Lanterns, Trapdoors, Gates, End Portal Block, Tripwire Hook, Beds
             switch (od & 0x03) { // Lower two bits
                 case 0: // south -> west
                     nd = (byte) ((od & 0xfc) + 1);

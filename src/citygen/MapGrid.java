@@ -526,4 +526,12 @@ public class MapGrid {
             }
         }
     }
+    public void resetMap() {
+        for (int y = 0; y < ysize; y++) {
+            for (int x = 0; x < xsize; x++) {
+                map[x][y].resetLoc();
+            }
+        }
+        //usedTileList.clear();
+    }
 }

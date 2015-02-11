@@ -5,6 +5,7 @@
  */
 package citygen;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,9 +37,10 @@ public class Building {
     int useCount;
     String schemFileName;
     ArrayList<RepeatedFloor> rFloors;
-    String buildingName;
+    public String buildingName;
     String credits;
     int preRotation;
+    public Color renderColor; // Color of building tile in GUI
 
     class FloorStepper {
 
@@ -155,6 +157,7 @@ public class Building {
         rFloors = new ArrayList<>();
         useLimit = -1;
         preRotation = 0;
+        renderColor = new Color(rnd.nextInt()>>8);
     }
 
     public void addRepeatedFloor(int startLevel, int endLevel, int minRepeat, int maxRepeat) {

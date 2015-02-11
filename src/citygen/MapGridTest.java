@@ -29,9 +29,9 @@ public class MapGridTest {
         // TODO code application logic here
         MapGridTest test = new MapGridTest();
 //        test.CityGenTest();
-//        test.LayRoadTest();
+        test.LayRoadTest();
 //        test.StretchTest();
-        test.ShrinkTest();
+//        test.ShrinkTest();
 //        test.BuildingPackTest();
     }
 

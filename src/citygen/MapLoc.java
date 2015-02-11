@@ -27,14 +27,11 @@ public class MapLoc {
     public PieceType ptype;
     public int prot;
     public Tile tile;
-//    public int nFork, sFork, eFork,wFork;
     public boolean forks[];
 
     public MapLoc() {
-        ptype = PieceType.NONE;
-//        nFork = sFork = eFork = wFork = 0;
         forks = new boolean[4];
-        forks[NORTH] = forks[SOUTH] = forks[EAST] = forks[WEST] = false;
+        resetLoc();
     }
 
     public int numForks() {
@@ -43,5 +40,13 @@ public class MapLoc {
             cnt = (b == true) ? cnt + 1 : cnt;
         }
         return cnt;
+    }
+    
+    public void resetLoc() {
+        ptype = PieceType.NONE;
+        forks[NORTH] = forks[SOUTH] = forks[EAST] = forks[WEST] = false;
+        contents = 0;
+        prot = 0;
+        tile = null;
     }
 }
