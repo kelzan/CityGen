@@ -4,10 +4,12 @@
  */
 package citygen;
 
+import gridgui.GridMapPane;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -218,16 +220,20 @@ public class RoadBuilder {
         void setLeftFork() {
             switch (direction) {
                 case MapLoc.NORTH:
-                    mapGrid.map[x][y].forks[MapLoc.WEST] = true;
+                    mapGrid.map[x][y].forks[MapLoc.WEST] = ForkType.PROPOSED;
+//                    mapGrid.map[x - 1][y].forks[MapLoc.EAST] = ForkType.EXISTS;
                     break;
                 case MapLoc.SOUTH:
-                    mapGrid.map[x][y].forks[MapLoc.EAST] = true;
+                    mapGrid.map[x][y].forks[MapLoc.EAST] = ForkType.PROPOSED;
+//                    mapGrid.map[x + 1][y].forks[MapLoc.WEST] = ForkType.EXISTS;
                     break;
                 case MapLoc.EAST:
-                    mapGrid.map[x][y].forks[MapLoc.NORTH] = true;
+                    mapGrid.map[x][y].forks[MapLoc.NORTH] = ForkType.PROPOSED;
+//                    mapGrid.map[x][y + 1].forks[MapLoc.SOUTH] = ForkType.EXISTS;
                     break;
                 case MapLoc.WEST:
-                    mapGrid.map[x][y].forks[MapLoc.SOUTH] = true;
+                    mapGrid.map[x][y].forks[MapLoc.SOUTH] = ForkType.PROPOSED;
+//                    mapGrid.map[x][y - 1].forks[MapLoc.NORTH] = ForkType.EXISTS;
                     break;
                 default:
                     throw new RuntimeException("Unknown Direction");
@@ -238,16 +244,20 @@ public class RoadBuilder {
         void setRightFork() {
             switch (direction) {
                 case MapLoc.NORTH:
-                    mapGrid.map[x][y].forks[MapLoc.EAST] = true;
+                    mapGrid.map[x][y].forks[MapLoc.EAST] = ForkType.PROPOSED;
+//                    mapGrid.map[x + 1][y].forks[MapLoc.WEST] = ForkType.EXISTS;
                     break;
                 case MapLoc.SOUTH:
-                    mapGrid.map[x][y].forks[MapLoc.WEST] = true;
+                    mapGrid.map[x][y].forks[MapLoc.WEST] = ForkType.PROPOSED;
+//                    mapGrid.map[x - 1][y].forks[MapLoc.EAST] = ForkType.EXISTS;
                     break;
                 case MapLoc.EAST:
-                    mapGrid.map[x][y].forks[MapLoc.SOUTH] = true;
+                    mapGrid.map[x][y].forks[MapLoc.SOUTH] = ForkType.PROPOSED;
+//                    mapGrid.map[x][y - 1].forks[MapLoc.NORTH] = ForkType.EXISTS;
                     break;
                 case MapLoc.WEST:
-                    mapGrid.map[x][y].forks[MapLoc.NORTH] = true;
+                    mapGrid.map[x][y].forks[MapLoc.NORTH] = ForkType.PROPOSED;
+//                    mapGrid.map[x][y + 1].forks[MapLoc.SOUTH] = ForkType.EXISTS;
                     break;
                 default:
                     throw new RuntimeException("Unknown Direction");
@@ -255,9 +265,62 @@ public class RoadBuilder {
             lastRightFork = 0;
         }
 
-        void markForkDone() {
-            mapGrid.map[x][y].forks[direction] = false;
+        void setStraightPath() {
+            switch (direction) {
+                case MapLoc.NORTH:
+                    mapGrid.map[x][y].forks[MapLoc.NORTH] = ForkType.EXISTS;
+                    mapGrid.map[x][y + 1].forks[MapLoc.SOUTH] = ForkType.EXISTS;
+                    break;
+                case MapLoc.SOUTH:
+                    mapGrid.map[x][y].forks[MapLoc.SOUTH] = ForkType.EXISTS;
+                    mapGrid.map[x][y - 1].forks[MapLoc.NORTH] = ForkType.EXISTS;
+                    break;
+                case MapLoc.EAST:
+                    mapGrid.map[x][y].forks[MapLoc.EAST] = ForkType.EXISTS;
+                    mapGrid.map[x + 1][y].forks[MapLoc.WEST] = ForkType.EXISTS;
+                    break;
+                case MapLoc.WEST:
+                    mapGrid.map[x][y].forks[MapLoc.WEST] = ForkType.EXISTS;
+                    mapGrid.map[x - 1][y].forks[MapLoc.EAST] = ForkType.EXISTS;
+                    break;
+                default:
+                    throw new RuntimeException("Unknown Direction");
+            }
         }
+
+        void markForkTaken() {
+            int newX = x;
+            int newY = y;
+            switch (direction) {
+                case MapLoc.NORTH:
+                    newY++;
+                    break;
+                case MapLoc.SOUTH:
+                    newY--;
+                    break;
+                case MapLoc.EAST:
+                    newX++;
+                    break;
+                case MapLoc.WEST:
+                    newX--;
+                    break;
+                default:
+                    throw new RuntimeException("Unknown Direction");
+            }
+            if (isValid(newX, newY)
+                    && ((mapGrid.map[newX][newY].contents == 0)
+                    || (mapGrid.map[newX][newY].contents == 1))) {
+                // If either empty space or another road ahead, mark the fork at
+                // both our current location, as well as the ahead location looking back.
+                mapGrid.map[x][y].forks[direction] = ForkType.EXISTS;
+                mapGrid.map[newX][newY].forks[MapLoc.getOppositeDirection(direction)] = ForkType.EXISTS;
+            } else {
+                // Something weird, there's nowhere to go. Mark this as no fork.
+                mapGrid.map[x][y].forks[direction] = ForkType.NO_FORK;
+            }
+        }
+
+
 
         boolean isValid(int checkx, int checky) {
             return ((checkx >= 0) && (checkx < mapGrid.xsize)
@@ -330,6 +393,7 @@ public class RoadBuilder {
         chanceMap.put(Chances.X_CROSSING, 15);
         chanceMap.put(Chances.STRAIGHT, 300);
     }
+    static GridMapPane pane;
 
     public RoadBuilder(EnumMap<Chances, Integer> chanceMap) {
         this.chanceMap = chanceMap;
@@ -337,10 +401,7 @@ public class RoadBuilder {
 
     public void setStart(MapGrid mapGrid, int x, int y) {
         // TODO: Should check for contents first, and find the closest available if not
-        mapGrid.map[x][y].forks[MapLoc.NORTH] = true;
-        mapGrid.map[x][y].forks[MapLoc.SOUTH] = true;
-        mapGrid.map[x][y].forks[MapLoc.EAST] = true;
-        mapGrid.map[x][y].forks[MapLoc.WEST] = true;
+        mapGrid.map[x][y].setForks(ForkType.PROPOSED);
         mapGrid.map[x][y].contents = 1;
     }
 
@@ -348,14 +409,20 @@ public class RoadBuilder {
         mapGrid.map[x][y].contents = 1;
         mapGrid.map[x][y].ptype = PieceType.ENTRANCE;
         if (northsouth) {
-            mapGrid.map[x][y].forks[MapLoc.NORTH] = true;
-            mapGrid.map[x][y].forks[MapLoc.SOUTH] = true;
+            mapGrid.map[x][y].forks[MapLoc.NORTH] = ForkType.PROPOSED;
+            mapGrid.map[x][y].forks[MapLoc.SOUTH] = ForkType.PROPOSED;
             mapGrid.map[x][y].prot = 1;
         } else {
-            mapGrid.map[x][y].forks[MapLoc.EAST] = true;
-            mapGrid.map[x][y].forks[MapLoc.WEST] = true;
+            mapGrid.map[x][y].forks[MapLoc.EAST] = ForkType.PROPOSED;
+            mapGrid.map[x][y].forks[MapLoc.WEST] = ForkType.PROPOSED;
             mapGrid.map[x][y].prot = 2;
         }
+    }
+
+    // For Debug only (updates screen one block at a time)
+    public void genRoads(MapGrid mapGrid, GridMapPane pane) {
+        this.pane = pane;
+        genRoads(mapGrid);
     }
 
     public void genRoads(MapGrid mapGrid) {
@@ -377,7 +444,7 @@ public class RoadBuilder {
         for (int x = 0; x < mapGrid.xsize; x++) {
             for (int y = 0; y < mapGrid.ysize; y++) {
                 for (int d = 0; d < 4; d++) {
-                    if (mapGrid.map[x][y].forks[d] == true) {
+                    if (mapGrid.map[x][y].forks[d] == ForkType.PROPOSED) {
                         available.add(new RoadWay(x, y, d, mapGrid));
                     }
                 }
@@ -386,7 +453,7 @@ public class RoadBuilder {
         if ((totalChoices = available.size()) > 0) {
             // Make a random selection
             chosenRoad = available.get(rnd.nextInt(totalChoices));
-            chosenRoad.markForkDone();
+            chosenRoad.markForkTaken();
         }
 
         return chosenRoad;
@@ -398,7 +465,7 @@ public class RoadBuilder {
         while (goodToGo == true) {
             road.moveOnDownTheRoad();
             // If we ran off the map, or into another road we exit
-            if (road.isCurLocBad() || road.isRunningParallel()) {
+            if (road.isCurLocBad() /*|| road.isRunningParallel()*/) {
                 goodToGo = false;
                 continue;
             }
@@ -407,6 +474,11 @@ public class RoadBuilder {
             // Now mark any forks generated for the location
             goodToGo = markForks(road);
 //            road.mapGrid.PrintForks();
+//            road.mapGrid.map[road.x][road.y].printForks();
+            if (pane != null) { // Debug Stuff
+                pane.repaint();
+                JOptionPane.showMessageDialog(pane,"Eggs are not supposed to be green.");
+            }
         }
     }
 
@@ -437,9 +509,10 @@ public class RoadBuilder {
         if (noLeftTurn || leftDiagBlocked || noRightTurn || rightDiagBlocked
                 || recentRightTurn || recentLeftTurn) { // T-Intersection
             currentChances.put(Chances.T_INTERSECTION, 0);
-            if (atEndOfMap || isRunningParallel) { // X-Intersection
-                currentChances.put(Chances.X_CROSSING, 0);
-            }
+        }
+        if (noLeftTurn || leftDiagBlocked || noRightTurn || rightDiagBlocked
+                || recentRightTurn || recentLeftTurn || atEndOfMap || isRunningParallel) { // X-Intersection
+            currentChances.put(Chances.X_CROSSING, 0);
         }
         if (atEndOfMap || isRunningParallel) {
             currentChances.put(Chances.STRAIGHT, 0);
@@ -448,9 +521,14 @@ public class RoadBuilder {
             currentChances.put(Chances.RIGHT_FORK, 0);
             currentChances.put(Chances.LEFT_FORK, 0);
         }
+        if (atEndOfMap) {
+            currentChances.put(Chances.RIGHT_FORK, 0);
+            currentChances.put(Chances.LEFT_FORK, 0);
+        }
 
         // Now select action based on current chances
         Chances selection = makeSelection(currentChances);
+//        System.out.printf("I'm at (%d,%d) going %d.\n", road.x, road.y, road.direction);
 //        System.out.println("Chances: " + currentChances);
 //        System.out.println("Selection: " + selection);
 
@@ -490,6 +568,9 @@ public class RoadBuilder {
             default:
                 continueOn = true;
                 break;
+        }
+        if (continueOn == true) {
+            road.setStraightPath();
         }
         return continueOn;
     }

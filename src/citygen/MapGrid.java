@@ -428,11 +428,16 @@ public class MapGrid {
     }
 
     int GetSurroundingRoadIndex(int x, int y) {
-        return ((hasRoad(x, y + 1) * 8) // North
-                + (hasRoad(x + 1, y) * 4) // East
-                + (hasRoad(x, y - 1) * 2) // South
-                + hasRoad(x - 1, y));     // West
-
+        int index = 0;
+//        return ((hasRoad(x, y + 1) * 8) // North
+//                + (hasRoad(x + 1, y) * 4) // East
+//                + (hasRoad(x, y - 1) * 2) // South
+//                + hasRoad(x - 1, y));     // West
+        index += (map[x][y].forks[MapLoc.NORTH] != ForkType.NO_FORK)?8:0;
+        index += (map[x][y].forks[MapLoc.EAST] != ForkType.NO_FORK)?4:0;
+        index += (map[x][y].forks[MapLoc.SOUTH] != ForkType.NO_FORK)?2:0;
+        index += (map[x][y].forks[MapLoc.WEST] != ForkType.NO_FORK)?1:0;
+        return index;
     }
 
     public boolean isFull() {
@@ -526,6 +531,7 @@ public class MapGrid {
             }
         }
     }
+
     public void resetMap() {
         for (int y = 0; y < ysize; y++) {
             for (int x = 0; x < xsize; x++) {
@@ -534,4 +540,53 @@ public class MapGrid {
         }
         //usedTileList.clear();
     }
+
+    // Called when a road has been manually added to the map grid, and you want to automatically
+    // join the forks here with the surrounding roads.
+    public void linkSurroundingPaths(int gX, int gY) {
+        // Cycle through all 4 directions, link to any existing paths
+        for (int d = 0; d < 4; d++) {
+            linkPath(gX, gY, d);
+        }
+    }
+
+    private void linkPath(int xFrom, int yFrom, int d) {
+        // Calculate offset from source to destination
+        int xTo = (d == MapLoc.EAST) ? 1 : (d == MapLoc.WEST) ? -1 : 0;
+        int yTo = (d == MapLoc.NORTH) ? 1 : (d == MapLoc.SOUTH) ? -1 : 0;
+        // Now add offset to source to find destination coords
+        xTo += xFrom;
+        yTo += yFrom;
+        // Now link two roads in both directions, if a road exists
+        if (hasRoad(xTo, yTo) == 1) {
+            map[xFrom][yFrom].forks[d] = ForkType.EXISTS;
+            map[xTo][yTo].forks[MapLoc.getOppositeDirection(d)] = ForkType.EXISTS;
+        } else {
+            map[xFrom][yFrom].forks[d] = ForkType.NO_FORK;
+        }
+    }
+
+    // Called when a road has been manually deleted from the map grid, and you want to automatically
+    // clean up the surrounding roads.
+
+    public void unlinkSurroundingPaths(int gX, int gY) {
+        // Cycle through all 4 directions, link to any existing paths
+        for (int d = 0; d < 4; d++) {
+            unlinkPath(gX, gY, d);
+        }
+    }
+
+    private void unlinkPath(int xFrom, int yFrom, int d) {
+        // Calculate offset from source to destination
+        int xTo = (d == MapLoc.EAST) ? 1 : (d == MapLoc.WEST) ? -1 : 0;
+        int yTo = (d == MapLoc.NORTH) ? 1 : (d == MapLoc.SOUTH) ? -1 : 0;
+        // Now add offset to source to find destination coords
+        xTo += xFrom;
+        yTo += yFrom;
+        // Now unlink if a road exists
+        if (hasRoad(xTo, yTo) == 1) {
+            map[xTo][yTo].forks[MapLoc.getOppositeDirection(d)] = ForkType.NO_FORK;
+        }
+    }
+
 }
